@@ -1,0 +1,21 @@
+[
+      {
+        "id": 1,
+        "name": "Laptop Dell",
+        "price": 15000000,
+        "category": "Electronics"
+      },
+      {
+        "id": 2,
+        "name": "iPhone 14",
+        "price": 25000000,
+        "category": "Mobile Phones"
+      },
+      {
+        "id": 3,
+        "name": "Tivi Sony",
+        "price": 12000000,
+        "category": "Home Appliances"
+      }
+    ]
+    

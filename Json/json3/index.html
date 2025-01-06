@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    table, th, td {
+      border: 1px solid black;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #f4f4f9;
+    }
+  </style>
+</head>
+<body>
+  <h1>Employee List</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Title</th>
+        <th>Division</th>
+        <th>Building</th>
+        <th>Room</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody id="employee-list">
+    </tbody>
+  </table>
+
+  <script>
+    function loadXML() {
+      const xhr = new XMLHttpRequest();
+      xhr.open("GET", "employees.xml", true);
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+          const xmlDoc = xhr.responseXML;
+          const employees = xmlDoc.getElementsByTagName("employee");
+          let output = "";
+
+          for (let i = 0; i < employees.length; i++) {
+            const id = employees[i].getAttribute("id");
+            const firstname = employees[i].getElementsByTagName("firstname")[0].textContent;
+            const lastname = employees[i].getElementsByTagName("lastname")[0].textContent;
+            const title = employees[i].getElementsByTagName("title")[0].textContent;
+            const division = employees[i].getElementsByTagName("division")[0].textContent;
+            const building = employees[i].getElementsByTagName("building")[0].textContent;
+            const room = employees[i].getElementsByTagName("room")[0].textContent;
+            const des = employees[i].getElementsByTagName("des")[0].textContent;
+
+            output += `
+              <tr>
+                <td>${id}</td>
+                <td>${firstname}</td>
+                <td>${lastname}</td>
+                <td>${title}</td>
+                <td>${division}</td>
+                <td>${building}</td>
+                <td>${room}</td>
+                <td>${des}</td>
+              </tr>`;
+          }
+
+          document.getElementById("employee-list").innerHTML = output;
+        } else {
+          console.error("Failed to load XML file.");
+        }
+      };
+
+      xhr.onerror = function () {
+        console.error("An error occurred while loading the XML file.");
+      };
+
+      xhr.send();
+    }
+
+    document.addEventListener("DOMContentLoaded", loadXML);
+  </script>
+</body>
+</html>

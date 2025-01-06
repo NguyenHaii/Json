@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<employees>
+    <employee id="123">
+        <firstname>nguyen van</firstname>
+        <lastname>an</lastname>
+        <title>programmer</title>
+        <division>IT</division>
+        <building>32 doi can</building>
+        <room>191</room>
+        <des>Normal</des>
+    </employee>
+    <employee id="456">
+        <firstname>nguyen thi</firstname>
+        <lastname>C</lastname>
+        <title>asdf</title>
+        <division>IT</division>
+        <building>32 doi can</building>
+        <room>191</room>
+        <des>Normal</des>
+    </employee>
+</employees>

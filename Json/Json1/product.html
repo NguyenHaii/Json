@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product List</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <h1>Danh sách sản phẩm</h1>
+  <div id="product-list"></div>
+
+  <script>
+    function loadProducts() {
+      $.getJSON('products.json', function(products) {
+        let xml = '<products>';
+        products.forEach(product => {
+          xml += `
+            <product>
+              <id>${product.id}</id>
+              <name>${product.name}</name>
+              <price>${product.price}</price>
+              <category>${product.category}</category>
+            </product>`;
+        });
+        xml += '</products>';
+
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xml, "text/xml");
+        const productNodes = xmlDoc.getElementsByTagName('product');
+
+        let html = '<ul>';
+        Array.from(productNodes).forEach(product => {
+          const name = product.getElementsByTagName('name')[0].textContent;
+          const price = product.getElementsByTagName('price')[0].textContent;
+          const category = product.getElementsByTagName('category')[0].textContent;
+
+          html += `
+            <li>
+              <strong>${name}</strong> - ${category} - Giá: ${price} VND
+            </li>`;
+        });
+        html += '</ul>';
+
+        $('#product-list').html(html);
+      });
+    }
+
+    $(document).ready(function() {
+      loadProducts();
+    });
+  </script>
+</body>
+</html>
