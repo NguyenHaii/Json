@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Danh sách sản phẩm</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1 {
+      color: #333;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #ffefc3; /* Màu nền khác biệt cho hàng đầu tiên */
+      font-weight: bold; /* Màu nền khác biệt */
+      color: rgb(42, 40, 40); /* Màu chữ */
+      text-transform: uppercase;
+    }
+    tbody tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    tbody tr:hover {
+      background-color: #f1f1f1;
+    }
+  </style>
+</head>
+<body>
+  <h1>Danh sách sản phẩm</h1>
+  <div id="product-list">Đang tải dữ liệu...</div>
+
+  <script>
+    function loadProducts() {
+      // Tải dữ liệu JSON từ thư mục `data`
+      $.getJSON('../data/products.json', function(products) {
+        // Chuyển đổi JSON sang XML dạng chuỗi
+        let xml = '<products>';
+        products.forEach(product => {
+          xml += `
+            <product>
+              <id>${product.id}</id>
+              <name>${product.name}</name>
+              <price>${product.price}</price>
+              <category>${product.category}</category>
+            </product>`;
+        });
+        xml += '</products>';
+
+        // Phân tích XML và tạo DOM
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xml, "text/xml");
+        const productNodes = xmlDoc.getElementsByTagName('product');
+
+        // Tạo bảng HTML từ XML
+        let html = `
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Tên sản phẩm</th>
+                <th>Danh mục</th>
+                <th>Giá</th>
+              </tr>
+            </thead>
+            <tbody>`;
+        Array.from(productNodes).forEach(product => {
+          const id = product.getElementsByTagName('id')[0].textContent;
+          const name = product.getElementsByTagName('name')[0].textContent;
+          const price = product.getElementsByTagName('price')[0].textContent;
+          const category = product.getElementsByTagName('category')[0].textContent;
+
+          html += `
+            <tr>
+              <td>${id}</td>
+              <td>${name}</td>
+              <td>${category}</td>
+              <td>${price} VND</td>
+            </tr>`;
+        });
+        html += `
+            </tbody>
+          </table>`;
+
+        // Hiển thị bảng sản phẩm lên giao diện
+        $('#product-list').html(html);
+      }).fail(function() {
+        $('#product-list').html('<p>Lỗi tải dữ liệu sản phẩm!</p>');
+      });
+    }
+
+    // Gọi hàm khi trang được tải
+    $(document).ready(function() {
+      loadProducts();
+    });
+  </script>
+</body>
+</html>

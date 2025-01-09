@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<products>
+    <product>
+        <id>1</id>
+        <name>Sản phẩm 1</name>
+        <price>100000</price>
+        <category>Điện thoại</category>
+    </product>
+    <product>
+        <id>2</id>
+        <name>Sản phẩm 2</name>
+        <price>200000</price>
+        <category>Laptop</category>
+    </product>
+    <product>
+        <id>3</id>
+        <name>Sản phẩm 3</name>
+        <price>150000</price>
+        <category>Máy tính bảng</category>
+    </product>
+</products>

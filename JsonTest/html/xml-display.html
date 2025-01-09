@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách sản phẩm từ XML</title>
+</head>
+<body>
+    <h1>Danh sách sản phẩm từ XML</h1>
+    <div id="product-table"></div>
+
+    <script>
+        // Tải dữ liệu XML và XSLT
+        fetch('../data/products.xml')
+            .then(response => response.text())
+            .then(xmlText => {
+                const xmlDoc = new DOMParser().parseFromString(xmlText, "application/xml");
+
+                fetch('../data/products.xsl')
+                    .then(response => response.text())
+                    .then(xslText => {
+                        const xslDoc = new DOMParser().parseFromString(xslText, "application/xml");
+
+                        // Áp dụng XSLT vào XML
+                        const xsltProcessor = new XSLTProcessor();
+                        xsltProcessor.importStylesheet(xslDoc);
+                        const resultDocument = xsltProcessor.transformToDocument(xmlDoc);
+
+                        // Hiển thị kết quả lên giao diện
+                        document.getElementById('product-table').appendChild(resultDocument.documentElement);
+                    })
+                    .catch(error => {
+                        document.getElementById('product-table').innerHTML = '<p>Lỗi tải XSLT!</p>';
+                        console.error('Error loading XSL:', error);
+                    });
+            })
+            .catch(error => {
+                document.getElementById('product-table').innerHTML = '<p>Lỗi tải dữ liệu XML!</p>';
+                console.error('Error loading XML:', error);
+            });
+    </script>
+</body>
+</html>
